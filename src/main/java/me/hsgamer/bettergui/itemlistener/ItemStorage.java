@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Nullable;
+import java.util.Map.Entry;
+import java.util.Optional;
 import me.hsgamer.bettergui.object.addon.Addon;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -48,15 +49,11 @@ public class ItemStorage {
     itemToMenuMap.remove(item);
   }
 
-  @Nullable
-  public String getMenu(ItemStack item, boolean leftClick, boolean rightClick) {
-    for (Map.Entry<InteractiveItemStack, String> entry : itemToMenuMap.entrySet()) {
+  public Optional<String> getMenu(ItemStack item, boolean leftClick, boolean rightClick) {
+    return itemToMenuMap.entrySet().stream().filter(entry -> {
       InteractiveItemStack checkItem = entry.getKey();
-      if (checkItem.isSimilar(item) && ((leftClick && checkItem.isLeftClick()) || (rightClick
-          && checkItem.isRightClick()))) {
-        return entry.getValue();
-      }
-    }
-    return null;
+      return checkItem.isSimilar(item) && ((leftClick && checkItem.isLeftClick()) || (rightClick
+          && checkItem.isRightClick()));
+    }).findFirst().map(Entry::getValue);
   }
 }

@@ -28,6 +28,24 @@ public class InteractiveItemStack extends ItemStack implements ConfigurationSeri
     return map;
   }
 
+  @Override
+  public boolean equals(Object object) {
+    if (object instanceof ItemStack) {
+      if (object instanceof InteractiveItemStack) {
+        return super.equals(object)
+            && this.leftClick == ((InteractiveItemStack) object).leftClick
+            && this.rightClick == ((InteractiveItemStack) object).rightClick;
+      }
+      return super.equals(object);
+    }
+    return false;
+  }
+
+  @Override
+  public int hashCode() {
+    return super.hashCode();
+  }
+
   public boolean isRightClick() {
     return rightClick;
   }
