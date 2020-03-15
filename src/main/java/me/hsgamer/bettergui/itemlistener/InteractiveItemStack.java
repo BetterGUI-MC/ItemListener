@@ -4,13 +4,14 @@ import java.util.Map;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.ItemStack;
 
-public class InteractiveItemStack extends ItemStack implements ConfigurationSerializable {
+public class InteractiveItemStack implements ConfigurationSerializable {
 
+  private final ItemStack itemStack;
   private boolean leftClick = true;
   private boolean rightClick = true;
 
   public InteractiveItemStack(ItemStack stack) {
-    super(stack);
+    this.itemStack = stack;
   }
 
   public static InteractiveItemStack deserialize(Map<String, Object> args) {
@@ -22,28 +23,14 @@ public class InteractiveItemStack extends ItemStack implements ConfigurationSeri
 
   @Override
   public Map<String, Object> serialize() {
-    Map<String, Object> map = super.serialize();
+    Map<String, Object> map = itemStack.serialize();
     map.put("left", leftClick);
     map.put("right", rightClick);
     return map;
   }
 
-  @Override
-  public boolean equals(Object object) {
-    if (object instanceof ItemStack) {
-      if (object instanceof InteractiveItemStack) {
-        return super.equals(object)
-            && this.leftClick == ((InteractiveItemStack) object).leftClick
-            && this.rightClick == ((InteractiveItemStack) object).rightClick;
-      }
-      return super.equals(object);
-    }
-    return false;
-  }
-
-  @Override
-  public int hashCode() {
-    return super.hashCode();
+  public ItemStack getItemStack() {
+    return itemStack;
   }
 
   public boolean isRightClick() {

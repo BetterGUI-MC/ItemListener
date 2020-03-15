@@ -48,7 +48,8 @@ public class ItemStorage {
   public Optional<String> getMenu(ItemStack item, boolean leftClick, boolean rightClick) {
     return itemToMenuMap.entrySet().stream().filter(entry -> {
       InteractiveItemStack checkItem = entry.getKey();
-      return checkItem.isSimilar(item) && ((leftClick && checkItem.isLeftClick()) || (rightClick
+      return checkItem.getItemStack().isSimilar(item) && ((leftClick && checkItem.isLeftClick())
+          || (rightClick
           && checkItem.isRightClick()));
     }).findFirst().map(Entry::getValue);
   }
