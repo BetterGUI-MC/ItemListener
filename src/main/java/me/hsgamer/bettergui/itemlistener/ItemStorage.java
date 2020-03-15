@@ -45,10 +45,6 @@ public class ItemStorage {
     itemToMenuMap.put(item, menu);
   }
 
-  public void remove(InteractiveItemStack item) {
-    itemToMenuMap.remove(item);
-  }
-
   public Optional<String> getMenu(ItemStack item, boolean leftClick, boolean rightClick) {
     return itemToMenuMap.entrySet().stream().filter(entry -> {
       InteractiveItemStack checkItem = entry.getKey();
