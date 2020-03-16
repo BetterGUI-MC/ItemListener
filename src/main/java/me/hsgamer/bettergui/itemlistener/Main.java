@@ -15,6 +15,11 @@ public final class Main extends Addon {
   public boolean onLoad() {
     ConfigurationSerialization.registerClass(InteractiveItemStack.class);
     setupConfig();
+    registerListener(new ItemListener());
+
+    getPlugin().getMessageConfig().getConfig()
+        .addDefault("item-required", "&cYou should have an item in your hand");
+
     return true;
   }
 
