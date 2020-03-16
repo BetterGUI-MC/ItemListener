@@ -26,12 +26,13 @@ public class ItemStorage {
   public void load() {
     config.getKeys(false).forEach(s -> config.getMapList(s)
         .forEach(map -> itemToMenuMap
-            .put(InteractiveItemStack.deserialize((Map<String, Object>) map), s)));
+            .put(InteractiveItemStack.deserialize((Map<String, Object>) map), s + ".yml")));
   }
 
   public void save() {
     Map<String, List<Map<String, Object>>> map = new HashMap<>();
     itemToMenuMap.forEach((item, s) -> {
+      s = s.replace(".yml", "");
       if (!map.containsKey(s)) {
         map.put(s, new ArrayList<>());
       }
