@@ -53,6 +53,8 @@ public class Command extends BukkitCommand {
                               interactiveItemStack.setRightClick(Boolean.parseBoolean(args[2]));
                             }
                             Main.getStorage().set(interactiveItemStack, args[0]);
+                            sendMessage(commandSender, getInstance().getMessageConfig()
+                                .get(DefaultMessage.SUCCESS));
                           } else {
                             sendMessage(commandSender, getInstance().getMessageConfig()
                                 .get(String.class, "item-required",

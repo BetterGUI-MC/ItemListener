@@ -22,6 +22,7 @@ public class ItemListener implements Listener {
       if (optional.isPresent()) {
         String menu = optional.get();
         if (getInstance().getMenuManager().contains(menu)) {
+          event.setCancelled(true);
           getInstance().getMenuManager().openMenu(menu, player, false);
         } else {
           CommonUtils.sendMessage(player,
