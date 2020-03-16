@@ -6,8 +6,8 @@ import static me.hsgamer.bettergui.util.CommonUtils.sendMessage;
 import java.util.Arrays;
 import me.hsgamer.bettergui.Permissions;
 import me.hsgamer.bettergui.config.impl.MessageConfig.DefaultMessage;
-import me.hsgamer.bettergui.lib.xseries.XMaterial;
 import me.hsgamer.bettergui.util.TestCase;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
@@ -45,7 +45,7 @@ public class Command extends BukkitCommand {
                             getInstance().getMessageConfig().get(DefaultMessage.MENU_REQUIRED)))
                         .setSuccessConsumer(commandSender -> {
                           ItemStack itemStack = ((Player) commandSender).getItemInHand();
-                          if (itemStack != null && !XMaterial.AIR.isSimilar(itemStack)) {
+                          if (!itemStack.getType().equals(Material.AIR)) {
                             InteractiveItemStack interactiveItemStack = new InteractiveItemStack(
                                 itemStack);
                             if (args.length > 3) {
