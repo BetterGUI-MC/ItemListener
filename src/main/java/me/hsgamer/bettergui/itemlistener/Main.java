@@ -6,6 +6,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 public final class Main extends Addon {
 
   private static ItemStorage storage;
+  private Command command = new Command();
 
   public static ItemStorage getStorage() {
     return storage;
@@ -26,10 +27,12 @@ public final class Main extends Addon {
   @Override
   public void onEnable() {
     storage = new ItemStorage(this);
+    registerCommand(command);
   }
 
   @Override
   public void onDisable() {
     storage.save();
+    unregisterCommand(command);
   }
 }

@@ -17,13 +17,15 @@ public class ItemListener implements Listener {
     Player player = event.getPlayer();
     String action = event.getAction().name();
     if (event.hasItem()) {
-      Optional<String> optional = Main.getStorage().getMenu(event.getItem(), action.startsWith("LEFT_"), action.startsWith("RIGHT_"));
+      Optional<String> optional = Main.getStorage()
+          .getMenu(event.getItem(), action.startsWith("LEFT_"), action.startsWith("RIGHT_"));
       if (optional.isPresent()) {
         String menu = optional.get();
         if (getInstance().getMenuManager().contains(menu)) {
           getInstance().getMenuManager().openMenu(menu, player, false);
         } else {
-          CommonUtils.sendMessage(player, getInstance().getMessageConfig().get(DefaultMessage.MENU_NOT_FOUND));
+          CommonUtils.sendMessage(player,
+              getInstance().getMessageConfig().get(DefaultMessage.MENU_NOT_FOUND));
         }
       }
     }
