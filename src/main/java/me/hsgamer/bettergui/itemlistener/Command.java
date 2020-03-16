@@ -45,7 +45,7 @@ public class Command extends BukkitCommand {
                             getInstance().getMessageConfig().get(DefaultMessage.MENU_REQUIRED)))
                         .setSuccessConsumer(commandSender -> {
                           ItemStack itemStack = ((Player) commandSender).getItemInHand();
-                          if (itemStack != null && XMaterial.AIR.isSimilar(itemStack)) {
+                          if (itemStack != null && !XMaterial.AIR.isSimilar(itemStack)) {
                             InteractiveItemStack interactiveItemStack = new InteractiveItemStack(
                                 itemStack);
                             if (args.length > 3) {
