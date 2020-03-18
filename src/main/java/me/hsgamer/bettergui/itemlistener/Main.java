@@ -35,4 +35,9 @@ public final class Main extends Addon {
     storage.save();
     unregisterCommand(command);
   }
+
+  @Override
+  public void onReload() {
+    storage.reload();
+  }
 }
