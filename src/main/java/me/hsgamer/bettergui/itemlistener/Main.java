@@ -38,6 +38,7 @@ public final class Main extends Addon {
 
   @Override
   public void onReload() {
-    storage.reload();
+    storage.save();
+    storage.load();
   }
 }

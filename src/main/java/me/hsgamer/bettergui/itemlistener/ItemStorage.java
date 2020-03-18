@@ -42,11 +42,6 @@ public class ItemStorage {
     addon.saveConfig();
   }
 
-  public void reload() {
-    save();
-    load();
-  }
-
   public void set(InteractiveItemStack item, String menu) {
     itemToMenuMap.put(item, menu);
   }
