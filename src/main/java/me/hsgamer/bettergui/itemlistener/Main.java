@@ -1,12 +1,15 @@
 package me.hsgamer.bettergui.itemlistener;
 
+import me.hsgamer.bettergui.itemlistener.command.Remove;
+import me.hsgamer.bettergui.itemlistener.command.Set;
 import me.hsgamer.bettergui.object.addon.Addon;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 
 public final class Main extends Addon {
 
   private static ItemStorage storage;
-  private Command command = new Command();
+  private Set set = new Set();
+  private Remove remove = new Remove();
 
   public static ItemStorage getStorage() {
     return storage;
@@ -27,13 +30,15 @@ public final class Main extends Addon {
   @Override
   public void onEnable() {
     storage = new ItemStorage(this);
-    registerCommand(command);
+    registerCommand(set);
+    registerCommand(remove);
   }
 
   @Override
   public void onDisable() {
     storage.save();
-    unregisterCommand(command);
+    unregisterCommand(set);
+    unregisterCommand(remove);
   }
 
   @Override
