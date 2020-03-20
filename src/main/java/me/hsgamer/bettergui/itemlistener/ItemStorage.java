@@ -48,6 +48,8 @@ public class ItemStorage {
 
   public void remove(String menu) {
     itemToMenuMap.entrySet().removeIf(entry -> entry.getValue().equals(menu));
+    config.set(menu.replace(".yml", ""), null);
+    addon.saveConfig();
   }
 
   public Optional<String> getMenu(ItemStack item, boolean leftClick, boolean rightClick) {
