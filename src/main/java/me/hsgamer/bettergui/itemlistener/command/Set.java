@@ -46,7 +46,7 @@ public class Set extends BukkitCommand {
                         .setFailConsumer(commandSender -> sendMessage(commandSender,
                             getInstance().getMessageConfig().get(DefaultMessage.MENU_REQUIRED)))
                         .setSuccessConsumer(commandSender -> {
-                          ItemStack itemStack = ((Player) commandSender).getItemInHand();
+                          ItemStack itemStack = getItemInHand((Player) commandSender);
                           if (!itemStack.getType().equals(Material.AIR)) {
                             InteractiveItemStack interactiveItemStack = new InteractiveItemStack(
                                 itemStack);
@@ -66,5 +66,14 @@ public class Set extends BukkitCommand {
                 )
         )
         .test();
+  }
+
+  @SuppressWarnings("deprecation")
+  private ItemStack getItemInHand(Player player) {
+    try {
+      return player.getInventory().getItemInMainHand();
+    } catch (Exception e) {
+      return player.getInventory().getItemInHand();
+    }
   }
 }
