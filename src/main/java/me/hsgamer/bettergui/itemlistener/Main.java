@@ -8,8 +8,6 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 public final class Main extends Addon {
 
   private static ItemStorage storage;
-  private Set set = new Set();
-  private Remove remove = new Remove();
 
   public static ItemStorage getStorage() {
     return storage;
@@ -30,15 +28,13 @@ public final class Main extends Addon {
   @Override
   public void onEnable() {
     storage = new ItemStorage(this);
-    registerCommand(set);
-    registerCommand(remove);
+    registerCommand(new Set());
+    registerCommand(new Remove());
   }
 
   @Override
   public void onDisable() {
     storage.save();
-    unregisterCommand(set);
-    unregisterCommand(remove);
   }
 
   @Override
