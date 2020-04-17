@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 import me.hsgamer.bettergui.object.addon.Addon;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -12,9 +11,9 @@ import org.bukkit.inventory.ItemStack;
 
 public class ItemStorage {
 
-  private Map<InteractiveItemStack, String> itemToMenuMap = new HashMap<>();
-  private Addon addon;
-  private FileConfiguration config;
+  private final Map<InteractiveItemStack, String> itemToMenuMap = new HashMap<>();
+  private final Addon addon;
+  private final FileConfiguration config;
 
   public ItemStorage(Addon addon) {
     this.addon = addon;
@@ -52,12 +51,13 @@ public class ItemStorage {
     addon.saveConfig();
   }
 
-  public Optional<String> getMenu(ItemStack item, boolean leftClick, boolean rightClick) {
+  public Optional<Map.Entry<InteractiveItemStack, String>> getMenu(ItemStack item,
+      boolean leftClick, boolean rightClick) {
     return itemToMenuMap.entrySet().stream().filter(entry -> {
       InteractiveItemStack checkItem = entry.getKey();
       return checkItem.getItemStack().isSimilar(item) && ((leftClick && checkItem.isLeftClick())
           || (rightClick
           && checkItem.isRightClick()));
-    }).findFirst().map(Entry::getValue);
+    }).findFirst();
   }
 }

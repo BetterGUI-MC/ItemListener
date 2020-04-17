@@ -24,7 +24,7 @@ public class Set extends BukkitCommand {
 
   public Set() {
     super("setitemmenu", "Bind an item to a menu",
-        "/setitemmenu <menu> [isLeftClick] [isRightClick]",
+        "/setitemmenu <menu> [isLeftClick] [isRightClick] [args]",
         Arrays.asList("itemmenu", "sim"));
   }
 
@@ -50,9 +50,13 @@ public class Set extends BukkitCommand {
                           if (!itemStack.getType().equals(Material.AIR)) {
                             InteractiveItemStack interactiveItemStack = new InteractiveItemStack(
                                 itemStack);
-                            if (args.length > 3) {
+                            if (args.length >= 3) {
                               interactiveItemStack.setLeftClick(Boolean.parseBoolean(args[1]));
                               interactiveItemStack.setRightClick(Boolean.parseBoolean(args[2]));
+                            }
+                            if (args.length >= 4) {
+                              interactiveItemStack
+                                  .setArgs(Arrays.asList(Arrays.copyOfRange(args, 3, args.length)));
                             }
                             Main.getStorage().set(interactiveItemStack, args[0]);
                             sendMessage(commandSender, getInstance().getMessageConfig()
