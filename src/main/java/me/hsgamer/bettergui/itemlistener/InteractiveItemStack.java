@@ -10,10 +10,9 @@ import org.bukkit.inventory.ItemStack;
 public class InteractiveItemStack implements ConfigurationSerializable {
 
   private final ItemStack itemStack;
+  private final List<String> args = new ArrayList<>();
   private boolean leftClick = true;
   private boolean rightClick = true;
-
-  private final List<String> args = new ArrayList<>();
 
   public InteractiveItemStack(ItemStack stack) {
     this.itemStack = stack;

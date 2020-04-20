@@ -6,24 +6,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import me.hsgamer.bettergui.object.addon.Addon;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 public class ItemStorage {
 
   private final Map<InteractiveItemStack, String> itemToMenuMap = new HashMap<>();
   private final Addon addon;
-  private final FileConfiguration config;
 
   public ItemStorage(Addon addon) {
     this.addon = addon;
-    this.config = addon.getConfig();
     load();
   }
 
   @SuppressWarnings("unchecked")
   public void load() {
-    config.getKeys(false).forEach(s -> config.getMapList(s)
+    addon.getConfig().getKeys(false).forEach(s -> addon.getConfig().getMapList(s)
         .forEach(map -> itemToMenuMap
             .put(InteractiveItemStack.deserialize((Map<String, Object>) map), s + ".yml")));
   }
@@ -37,7 +34,7 @@ public class ItemStorage {
       }
       map.get(s).add(item.serialize());
     });
-    map.forEach(config::set);
+    map.forEach((s, list) -> addon.getConfig().set(s, list));
     addon.saveConfig();
   }
 
@@ -47,7 +44,7 @@ public class ItemStorage {
 
   public void remove(String menu) {
     itemToMenuMap.entrySet().removeIf(entry -> entry.getValue().equals(menu));
-    config.set(menu.replace(".yml", ""), null);
+    addon.getConfig().set(menu.replace(".yml", ""), null);
     addon.saveConfig();
   }
 

@@ -21,6 +21,7 @@ public final class Main extends Addon {
 
     getPlugin().getMessageConfig().getConfig()
         .addDefault("item-required", "&cYou should have an item in your hand");
+    getPlugin().getMessageConfig().saveConfig();
 
     return true;
   }
