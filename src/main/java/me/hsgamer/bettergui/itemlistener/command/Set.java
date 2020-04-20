@@ -8,7 +8,6 @@ import me.hsgamer.bettergui.Permissions;
 import me.hsgamer.bettergui.config.impl.MessageConfig.DefaultMessage;
 import me.hsgamer.bettergui.itemlistener.InteractiveItemStack;
 import me.hsgamer.bettergui.itemlistener.Main;
-import me.hsgamer.bettergui.util.TestCase;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
@@ -30,46 +29,45 @@ public class Set extends BukkitCommand {
 
   @Override
   public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-    return TestCase.create(sender)
-        .setPredicate(commandSender -> commandSender instanceof Player)
-        .setFailConsumer(commandSender ->
-            sendMessage(commandSender,
-                getInstance().getMessageConfig().get(DefaultMessage.PLAYER_ONLY)))
-        .setSuccessNextTestCase(
-            new TestCase<CommandSender>()
-                .setPredicate(commandSender -> commandSender.hasPermission(PERMISSION))
-                .setFailConsumer(commandSender -> sendMessage(commandSender,
-                    getInstance().getMessageConfig().get(DefaultMessage.NO_PERMISSION)))
-                .setSuccessNextTestCase(
-                    new TestCase<CommandSender>()
-                        .setPredicate(commandSender -> args.length > 0)
-                        .setFailConsumer(commandSender -> sendMessage(commandSender,
-                            getInstance().getMessageConfig().get(DefaultMessage.MENU_REQUIRED)))
-                        .setSuccessConsumer(commandSender -> {
-                          ItemStack itemStack = getItemInHand((Player) commandSender);
-                          if (!itemStack.getType().equals(Material.AIR)) {
-                            InteractiveItemStack interactiveItemStack = new InteractiveItemStack(
-                                itemStack);
-                            if (args.length >= 3) {
-                              interactiveItemStack.setLeftClick(Boolean.parseBoolean(args[1]));
-                              interactiveItemStack.setRightClick(Boolean.parseBoolean(args[2]));
-                            }
-                            if (args.length >= 4) {
-                              interactiveItemStack
-                                  .setArgs(Arrays.asList(Arrays.copyOfRange(args, 3, args.length)));
-                            }
-                            Main.getStorage().set(interactiveItemStack, args[0]);
-                            sendMessage(commandSender, getInstance().getMessageConfig()
-                                .get(DefaultMessage.SUCCESS));
-                          } else {
-                            sendMessage(commandSender, getInstance().getMessageConfig()
-                                .get(String.class, "item-required",
-                                    "&cYou should have an item in your hand"));
-                          }
-                        })
-                )
-        )
-        .test();
+    if (!(sender instanceof Player)) {
+      sendMessage(sender,
+          getInstance().getMessageConfig().get(DefaultMessage.PLAYER_ONLY));
+      return false;
+    }
+    if (!sender.hasPermission(PERMISSION)) {
+      sendMessage(sender,
+          getInstance().getMessageConfig().get(DefaultMessage.NO_PERMISSION));
+      return false;
+    }
+
+    if (args.length <= 0) {
+      sendMessage(sender,
+          getInstance().getMessageConfig().get(DefaultMessage.MENU_REQUIRED));
+      return false;
+    }
+
+    ItemStack itemStack = getItemInHand((Player) sender);
+    if (!itemStack.getType().equals(Material.AIR)) {
+      InteractiveItemStack interactiveItemStack = new InteractiveItemStack(
+          itemStack);
+      if (args.length >= 3) {
+        interactiveItemStack.setLeftClick(Boolean.parseBoolean(args[1]));
+        interactiveItemStack.setRightClick(Boolean.parseBoolean(args[2]));
+      }
+      if (args.length >= 4) {
+        interactiveItemStack
+            .setArgs(Arrays.asList(Arrays.copyOfRange(args, 3, args.length)));
+      }
+      Main.getStorage().set(interactiveItemStack, args[0]);
+      sendMessage(sender, getInstance().getMessageConfig()
+          .get(DefaultMessage.SUCCESS));
+    } else {
+      sendMessage(sender, getInstance().getMessageConfig()
+          .get(String.class, "item-required",
+              "&cYou should have an item in your hand"));
+      return false;
+    }
+    return true;
   }
 
   @SuppressWarnings("deprecation")
