@@ -34,6 +34,10 @@ public class ItemStorage {
       }
       map.get(s).add(item.serialize());
     });
+
+    // Clear old config
+    addon.getConfig().getKeys(false).forEach(s -> addon.getConfig().set(s, null));
+
     map.forEach((s, list) -> addon.getConfig().set(s, list));
     addon.saveConfig();
   }
@@ -44,8 +48,6 @@ public class ItemStorage {
 
   public void remove(String menu) {
     itemToMenuMap.entrySet().removeIf(entry -> entry.getValue().equals(menu));
-    addon.getConfig().set(menu.replace(".yml", ""), null);
-    addon.saveConfig();
   }
 
   public Optional<Map.Entry<InteractiveItemStack, String>> getMenu(ItemStack item,
