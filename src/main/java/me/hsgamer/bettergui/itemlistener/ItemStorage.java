@@ -20,6 +20,7 @@ public class ItemStorage {
 
   @SuppressWarnings("unchecked")
   public void load() {
+    itemToMenuMap.clear();
     addon.getConfig().getKeys(false).forEach(s -> addon.getConfig().getMapList(s)
         .forEach(map -> itemToMenuMap
             .put(InteractiveItemStack.deserialize((Map<String, Object>) map), s + ".yml")));
