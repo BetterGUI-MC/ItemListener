@@ -1,5 +1,6 @@
 package me.hsgamer.bettergui.itemlistener;
 
+import me.hsgamer.bettergui.config.ConfigPath;
 import me.hsgamer.bettergui.itemlistener.command.Remove;
 import me.hsgamer.bettergui.itemlistener.command.Set;
 import me.hsgamer.bettergui.object.addon.Addon;
@@ -7,6 +8,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 
 public final class Main extends Addon {
 
+  public static final ConfigPath<String> ITEM_REQUIRED = new ConfigPath<>(String.class, "item-required", "&cYou should have an item in your hand");
   private static ItemStorage storage;
 
   public static ItemStorage getStorage() {
@@ -19,8 +21,7 @@ public final class Main extends Addon {
     setupConfig();
     registerListener(new ItemListener());
 
-    getPlugin().getMessageConfig().getConfig()
-        .addDefault("item-required", "&cYou should have an item in your hand");
+    ITEM_REQUIRED.setConfig(getPlugin().getMessageConfig());
     getPlugin().getMessageConfig().saveConfig();
 
     return true;

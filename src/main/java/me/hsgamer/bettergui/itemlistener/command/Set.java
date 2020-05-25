@@ -1,11 +1,10 @@
 package me.hsgamer.bettergui.itemlistener.command;
 
-import static me.hsgamer.bettergui.BetterGUI.getInstance;
 import static me.hsgamer.bettergui.util.CommonUtils.sendMessage;
 
 import java.util.Arrays;
 import me.hsgamer.bettergui.Permissions;
-import me.hsgamer.bettergui.config.impl.MessageConfig.DefaultMessage;
+import me.hsgamer.bettergui.config.impl.MessageConfig;
 import me.hsgamer.bettergui.itemlistener.InteractiveItemStack;
 import me.hsgamer.bettergui.itemlistener.Main;
 import org.bukkit.Material;
@@ -30,19 +29,16 @@ public class Set extends BukkitCommand {
   @Override
   public boolean execute(CommandSender sender, String commandLabel, String[] args) {
     if (!(sender instanceof Player)) {
-      sendMessage(sender,
-          getInstance().getMessageConfig().get(DefaultMessage.PLAYER_ONLY));
+      sendMessage(sender, MessageConfig.PLAYER_ONLY.getValue());
       return false;
     }
     if (!sender.hasPermission(PERMISSION)) {
-      sendMessage(sender,
-          getInstance().getMessageConfig().get(DefaultMessage.NO_PERMISSION));
+      sendMessage(sender, MessageConfig.NO_PERMISSION.getValue());
       return false;
     }
 
     if (args.length <= 0) {
-      sendMessage(sender,
-          getInstance().getMessageConfig().get(DefaultMessage.MENU_REQUIRED));
+      sendMessage(sender, MessageConfig.MENU_REQUIRED.getValue());
       return false;
     }
 
@@ -59,12 +55,9 @@ public class Set extends BukkitCommand {
             .setArgs(Arrays.asList(Arrays.copyOfRange(args, 3, args.length)));
       }
       Main.getStorage().set(interactiveItemStack, args[0]);
-      sendMessage(sender, getInstance().getMessageConfig()
-          .get(DefaultMessage.SUCCESS));
+      sendMessage(sender, MessageConfig.SUCCESS.getValue());
     } else {
-      sendMessage(sender, getInstance().getMessageConfig()
-          .get(String.class, "item-required",
-              "&cYou should have an item in your hand"));
+      sendMessage(sender, Main.ITEM_REQUIRED.getValue());
       return false;
     }
     return true;

@@ -1,11 +1,10 @@
 package me.hsgamer.bettergui.itemlistener.command;
 
-import static me.hsgamer.bettergui.BetterGUI.getInstance;
 import static me.hsgamer.bettergui.util.CommonUtils.sendMessage;
 
 import java.util.Collections;
 import me.hsgamer.bettergui.Permissions;
-import me.hsgamer.bettergui.config.impl.MessageConfig.DefaultMessage;
+import me.hsgamer.bettergui.config.impl.MessageConfig;
 import me.hsgamer.bettergui.itemlistener.Main;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
@@ -25,17 +24,14 @@ public class Remove extends BukkitCommand {
   @Override
   public boolean execute(CommandSender commandSender, String s, String[] strings) {
     if (!commandSender.hasPermission(PERMISSION)) {
-      sendMessage(commandSender,
-          getInstance().getMessageConfig().get(DefaultMessage.NO_PERMISSION));
+      sendMessage(commandSender, MessageConfig.NO_PERMISSION.getValue());
       return false;
     }
     if (strings.length > 0) {
       Main.getStorage().remove(strings[0]);
-      sendMessage(commandSender, getInstance().getMessageConfig()
-          .get(DefaultMessage.SUCCESS));
+      sendMessage(commandSender, MessageConfig.SUCCESS.getValue());
     } else {
-      sendMessage(commandSender,
-          getInstance().getMessageConfig().get(DefaultMessage.MENU_REQUIRED));
+      sendMessage(commandSender, MessageConfig.MENU_REQUIRED.getValue());
       return false;
     }
     return true;
