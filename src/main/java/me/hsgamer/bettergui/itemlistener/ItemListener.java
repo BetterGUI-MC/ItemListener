@@ -4,8 +4,8 @@ import static me.hsgamer.bettergui.BetterGUI.getInstance;
 
 import java.util.Map;
 import java.util.Optional;
-import me.hsgamer.bettergui.config.impl.MessageConfig;
-import me.hsgamer.bettergui.util.CommonUtils;
+import me.hsgamer.bettergui.config.MessageConfig;
+import me.hsgamer.bettergui.util.MessageUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,7 +28,7 @@ public class ItemListener implements Listener {
           getInstance().getMenuManager()
               .openMenu(menu, player, entry.getKey().getArgs().toArray(new String[0]), false);
         } else {
-          CommonUtils.sendMessage(player, MessageConfig.MENU_NOT_FOUND.getValue());
+          MessageUtils.sendMessage(player, MessageConfig.MENU_NOT_FOUND.getValue());
         }
       }
     }
