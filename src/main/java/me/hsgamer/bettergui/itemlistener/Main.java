@@ -1,49 +1,51 @@
 package me.hsgamer.bettergui.itemlistener;
 
+import me.hsgamer.bettergui.api.addon.BetterGUIAddon;
 import me.hsgamer.bettergui.itemlistener.command.Remove;
 import me.hsgamer.bettergui.itemlistener.command.Set;
-import me.hsgamer.bettergui.object.addon.Addon;
-import me.hsgamer.bettergui.util.config.path.StringConfigPath;
-import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import me.hsgamer.bettergui.lib.core.config.path.StringConfigPath;
+import me.hsgamer.bettergui.lib.simpleyaml.configuration.serialization.ConfigurationSerialization;
 
-public final class Main extends Addon {
+import static me.hsgamer.bettergui.BetterGUI.getInstance;
 
-  public static final StringConfigPath ITEM_REQUIRED = new StringConfigPath("item-required",
-      "&cYou should have an item in your hand");
-  private static ItemStorage storage;
+public final class Main extends BetterGUIAddon {
 
-  public static ItemStorage getStorage() {
-    return storage;
-  }
+    public static final StringConfigPath ITEM_REQUIRED = new StringConfigPath("item-required",
+            "&cYou should have an item in your hand");
+    private static ItemStorage storage;
 
-  @Override
-  public boolean onLoad() {
-    ConfigurationSerialization.registerClass(InteractiveItemStack.class);
-    setupConfig();
-    registerListener(new ItemListener());
+    public static ItemStorage getStorage() {
+        return storage;
+    }
 
-    ITEM_REQUIRED.setConfig(getPlugin().getMessageConfig());
-    getPlugin().getMessageConfig().saveConfig();
+    @Override
+    public boolean onLoad() {
+        ConfigurationSerialization.registerClass(InteractiveItemStack.class);
+        setupConfig();
+        registerListener(new ItemListener());
 
-    return true;
-  }
+        ITEM_REQUIRED.setConfig(getInstance().getMessageConfig());
+        getInstance().getMessageConfig().saveConfig();
 
-  @Override
-  public void onEnable() {
-    storage = new ItemStorage(this);
-    registerCommand(new Set());
-    registerCommand(new Remove());
-  }
+        return true;
+    }
 
-  @Override
-  public void onDisable() {
-    storage.save();
-  }
+    @Override
+    public void onEnable() {
+        storage = new ItemStorage(this);
+        registerCommand(new Set());
+        registerCommand(new Remove());
+    }
 
-  @Override
-  public void onReload() {
-    storage.save();
-    reloadConfig();
-    storage.load();
-  }
+    @Override
+    public void onDisable() {
+        storage.save();
+    }
+
+    @Override
+    public void onReload() {
+        storage.save();
+        reloadConfig();
+        storage.load();
+    }
 }
