@@ -1,5 +1,6 @@
 package me.hsgamer.bettergui.itemlistener.command;
 
+import me.hsgamer.bettergui.Permissions;
 import me.hsgamer.bettergui.config.MessageConfig;
 import me.hsgamer.bettergui.itemlistener.InteractiveItemStack;
 import me.hsgamer.bettergui.itemlistener.Main;
@@ -17,7 +18,7 @@ import static me.hsgamer.bettergui.lib.core.bukkit.utils.MessageUtils.sendMessag
 
 public class Set extends BukkitCommand {
 
-    private static final Permission PERMISSION = new Permission("bettergui.setitemmenu", PermissionDefault.OP);
+    private static final Permission PERMISSION = new Permission(Permissions.PREFIX + ".setitemmenu", PermissionDefault.OP);
 
     public Set() {
         super("setitemmenu", "Bind an item to a menu",

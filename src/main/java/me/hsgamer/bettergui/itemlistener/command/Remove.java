@@ -1,5 +1,6 @@
 package me.hsgamer.bettergui.itemlistener.command;
 
+import me.hsgamer.bettergui.Permissions;
 import me.hsgamer.bettergui.config.MessageConfig;
 import me.hsgamer.bettergui.itemlistener.Main;
 import org.bukkit.command.CommandSender;
@@ -13,7 +14,7 @@ import static me.hsgamer.bettergui.lib.core.bukkit.utils.MessageUtils.sendMessag
 
 public class Remove extends BukkitCommand {
 
-    private static final Permission PERMISSION = new Permission("bettergui.removeitemmenu", PermissionDefault.OP);
+    private static final Permission PERMISSION = new Permission(Permissions.PREFIX + ".removeitemmenu", PermissionDefault.OP);
 
     public Remove() {
         super("removeitemmenu", "Remove the binding to the menu", "/removeitemmenu <menu>",
