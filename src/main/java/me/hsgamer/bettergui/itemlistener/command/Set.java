@@ -3,7 +3,6 @@ package me.hsgamer.bettergui.itemlistener.command;
 import me.hsgamer.bettergui.config.MessageConfig;
 import me.hsgamer.bettergui.itemlistener.InteractiveItemStack;
 import me.hsgamer.bettergui.itemlistener.Main;
-import me.hsgamer.bettergui.lib.core.bukkit.utils.PermissionUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
@@ -18,23 +17,22 @@ import static me.hsgamer.bettergui.lib.core.bukkit.utils.MessageUtils.sendMessag
 
 public class Set extends BukkitCommand {
 
-    private static final Permission PERMISSION = PermissionUtils
-            .createPermission("bettergui.setitemmenu", null, PermissionDefault.OP);
+    private static final Permission PERMISSION = new Permission("bettergui.setitemmenu", PermissionDefault.OP);
 
     public Set() {
         super("setitemmenu", "Bind an item to a menu",
                 "/setitemmenu <menu> [isLeftClick] [isRightClick] [args]",
                 Arrays.asList("itemmenu", "sim"));
+        setPermission(PERMISSION.getName());
     }
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-        if (!(sender instanceof Player)) {
-            sendMessage(sender, MessageConfig.PLAYER_ONLY.getValue());
+        if (!testPermission(sender)) {
             return false;
         }
-        if (!sender.hasPermission(PERMISSION)) {
-            sendMessage(sender, MessageConfig.NO_PERMISSION.getValue());
+        if (!(sender instanceof Player)) {
+            sendMessage(sender, MessageConfig.PLAYER_ONLY.getValue());
             return false;
         }
 

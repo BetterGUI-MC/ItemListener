@@ -4,7 +4,6 @@ import me.hsgamer.bettergui.api.addon.BetterGUIAddon;
 import me.hsgamer.bettergui.itemlistener.command.Remove;
 import me.hsgamer.bettergui.itemlistener.command.Set;
 import me.hsgamer.bettergui.lib.core.config.path.StringConfigPath;
-import me.hsgamer.bettergui.lib.simpleyaml.configuration.serialization.ConfigurationSerialization;
 
 import static me.hsgamer.bettergui.BetterGUI.getInstance;
 
@@ -20,12 +19,11 @@ public final class Main extends BetterGUIAddon {
 
     @Override
     public boolean onLoad() {
-        ConfigurationSerialization.registerClass(InteractiveItemStack.class);
         setupConfig();
         registerListener(new ItemListener());
 
         ITEM_REQUIRED.setConfig(getInstance().getMessageConfig());
-        getInstance().getMessageConfig().saveConfig();
+        getInstance().getMessageConfig().save();
 
         return true;
     }

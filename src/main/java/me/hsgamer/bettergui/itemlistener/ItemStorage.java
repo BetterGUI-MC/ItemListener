@@ -1,6 +1,7 @@
 package me.hsgamer.bettergui.itemlistener;
 
 import me.hsgamer.bettergui.api.addon.BetterGUIAddon;
+import me.hsgamer.bettergui.lib.core.config.Config;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
@@ -18,23 +19,26 @@ public class ItemStorage {
     @SuppressWarnings("unchecked")
     public void load() {
         itemToMenuMap.clear();
-        addon.getConfig().getKeys(false).forEach(s -> addon.getConfig().getMapList(s)
-                .forEach(map -> itemToMenuMap
-                        .put(InteractiveItemStack.deserialize((Map<String, Object>) map), s + ".yml")));
+        Config config = addon.getConfig();
+        for (String s : config.getKeys(false)) {
+            Optional.ofNullable(config.getInstance(s, List.class))
+                    .ifPresent(list -> list.forEach(o -> {
+                        if (o instanceof Map) {
+                            itemToMenuMap.put(InteractiveItemStack.deserialize((Map<String, Object>) o), s + ".yml");
+                        }
+                    }));
+        }
     }
 
     public void save() {
         Map<String, List<Map<String, Object>>> map = new HashMap<>();
         itemToMenuMap.forEach((item, s) -> {
             s = s.replace(".yml", "");
-            if (!map.containsKey(s)) {
-                map.put(s, new ArrayList<>());
-            }
-            map.get(s).add(item.serialize());
+            map.computeIfAbsent(s, s1 -> new ArrayList<>()).add(item.serialize());
         });
 
         // Clear old config
-        addon.getConfig().getKeys(false).forEach(s -> addon.getConfig().set(s, null));
+        addon.getConfig().getKeys(false).forEach(addon.getConfig()::remove);
 
         map.forEach((s, list) -> addon.getConfig().set(s, list));
         addon.saveConfig();
@@ -48,8 +52,7 @@ public class ItemStorage {
         itemToMenuMap.entrySet().removeIf(entry -> entry.getValue().equals(menu));
     }
 
-    public Optional<Map.Entry<InteractiveItemStack, String>> getMenu(ItemStack item,
-                                                                     boolean leftClick, boolean rightClick) {
+    public Optional<Map.Entry<InteractiveItemStack, String>> getMenu(ItemStack item, boolean leftClick, boolean rightClick) {
         return itemToMenuMap.entrySet().stream().filter(entry -> {
             InteractiveItemStack checkItem = entry.getKey();
             return checkItem.getItemStack().isSimilar(item) && ((leftClick && checkItem.isLeftClick())

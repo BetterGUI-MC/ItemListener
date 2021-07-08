@@ -1,6 +1,5 @@
 package me.hsgamer.bettergui.itemlistener;
 
-import me.hsgamer.bettergui.lib.simpleyaml.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -8,7 +7,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public class InteractiveItemStack implements ConfigurationSerializable {
+public class InteractiveItemStack {
 
     private final ItemStack itemStack;
     private final List<String> args = new ArrayList<>();
@@ -58,7 +57,6 @@ public class InteractiveItemStack implements ConfigurationSerializable {
         this.leftClick = leftClick;
     }
 
-    @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = itemStack.serialize();
         map.put("left", leftClick);

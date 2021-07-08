@@ -2,7 +2,6 @@ package me.hsgamer.bettergui.itemlistener.command;
 
 import me.hsgamer.bettergui.config.MessageConfig;
 import me.hsgamer.bettergui.itemlistener.Main;
-import me.hsgamer.bettergui.lib.core.bukkit.utils.PermissionUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.permissions.Permission;
@@ -14,18 +13,17 @@ import static me.hsgamer.bettergui.lib.core.bukkit.utils.MessageUtils.sendMessag
 
 public class Remove extends BukkitCommand {
 
-    private static final Permission PERMISSION = PermissionUtils
-            .createPermission("bettergui.removeitemmenu", null, PermissionDefault.OP);
+    private static final Permission PERMISSION = new Permission("bettergui.removeitemmenu", PermissionDefault.OP);
 
     public Remove() {
         super("removeitemmenu", "Remove the binding to the menu", "/removeitemmenu <menu>",
                 Collections.singletonList("rim"));
+        setPermission(PERMISSION.getName());
     }
 
     @Override
     public boolean execute(CommandSender commandSender, String s, String[] strings) {
-        if (!commandSender.hasPermission(PERMISSION)) {
-            sendMessage(commandSender, MessageConfig.NO_PERMISSION.getValue());
+        if (!testPermission(commandSender)) {
             return false;
         }
         if (strings.length > 0) {
