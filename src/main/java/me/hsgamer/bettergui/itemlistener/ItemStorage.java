@@ -1,7 +1,6 @@
 package me.hsgamer.bettergui.itemlistener;
 
-import me.hsgamer.bettergui.api.addon.BetterGUIAddon;
-import me.hsgamer.bettergui.lib.core.config.Config;
+import me.hsgamer.hscore.config.Config;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
@@ -9,17 +8,17 @@ import java.util.*;
 public class ItemStorage {
 
     private final Map<InteractiveItemStack, String> itemToMenuMap = new HashMap<>();
-    private final BetterGUIAddon addon;
+    private final Main main;
 
-    public ItemStorage(BetterGUIAddon addon) {
-        this.addon = addon;
-        load();
+
+    public ItemStorage(Main main) {
+        this.main = main;
     }
 
     @SuppressWarnings("unchecked")
     public void load() {
         itemToMenuMap.clear();
-        Config config = addon.getConfig();
+        Config config = main.getConfig();
         for (String s : config.getKeys(false)) {
             Optional.ofNullable(config.getInstance(s, List.class))
                     .ifPresent(list -> list.forEach(o -> {
@@ -38,10 +37,10 @@ public class ItemStorage {
         });
 
         // Clear old config
-        addon.getConfig().getKeys(false).forEach(addon.getConfig()::remove);
+        main.getConfig().getKeys(false).forEach(main.getConfig()::remove);
 
-        map.forEach((s, list) -> addon.getConfig().set(s, list));
-        addon.saveConfig();
+        map.forEach((s, list) -> main.getConfig().set(s, list));
+        main.getConfig().save();
     }
 
     public void set(InteractiveItemStack item, String menu) {

@@ -1,7 +1,6 @@
 package me.hsgamer.bettergui.itemlistener.command;
 
 import me.hsgamer.bettergui.Permissions;
-import me.hsgamer.bettergui.config.MessageConfig;
 import me.hsgamer.bettergui.itemlistener.InteractiveItemStack;
 import me.hsgamer.bettergui.itemlistener.Main;
 import org.bukkit.Material;
@@ -14,16 +13,19 @@ import org.bukkit.permissions.PermissionDefault;
 
 import java.util.Arrays;
 
-import static me.hsgamer.bettergui.lib.core.bukkit.utils.MessageUtils.sendMessage;
+import static me.hsgamer.bettergui.BetterGUI.getInstance;
+import static me.hsgamer.hscore.bukkit.utils.MessageUtils.sendMessage;
 
 public class Set extends BukkitCommand {
 
     private static final Permission PERMISSION = new Permission(Permissions.PREFIX + ".setitemmenu", PermissionDefault.OP);
+    private final Main main;
 
-    public Set() {
+    public Set(Main main) {
         super("setitemmenu", "Bind an item to a menu",
                 "/setitemmenu <menu> [isLeftClick] [isRightClick] [args]",
                 Arrays.asList("itemmenu", "sim"));
+        this.main = main;
         setPermission(PERMISSION.getName());
     }
 
@@ -33,12 +35,12 @@ public class Set extends BukkitCommand {
             return false;
         }
         if (!(sender instanceof Player)) {
-            sendMessage(sender, MessageConfig.PLAYER_ONLY.getValue());
+            sendMessage(sender, getInstance().getMessageConfig().playerOnly);
             return false;
         }
 
-        if (args.length <= 0) {
-            sendMessage(sender, MessageConfig.MENU_REQUIRED.getValue());
+        if (args.length == 0) {
+            sendMessage(sender, getInstance().getMessageConfig().menuRequired);
             return false;
         }
 
@@ -54,10 +56,10 @@ public class Set extends BukkitCommand {
                 interactiveItemStack
                         .setArgs(Arrays.asList(Arrays.copyOfRange(args, 3, args.length)));
             }
-            Main.getStorage().set(interactiveItemStack, args[0]);
-            sendMessage(sender, MessageConfig.SUCCESS.getValue());
+            main.getStorage().set(interactiveItemStack, args[0]);
+            sendMessage(sender, getInstance().getMessageConfig().success);
         } else {
-            sendMessage(sender, Main.ITEM_REQUIRED.getValue());
+            sendMessage(sender, main.getMessageConfig().itemRequired);
             return false;
         }
         return true;
