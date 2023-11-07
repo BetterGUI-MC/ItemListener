@@ -1,6 +1,7 @@
 package me.hsgamer.bettergui.itemlistener;
 
 import me.hsgamer.hscore.config.Config;
+import me.hsgamer.hscore.config.PathString;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
@@ -19,11 +20,11 @@ public class ItemStorage {
     public void load() {
         itemToMenuMap.clear();
         Config config = main.getConfig();
-        for (String s : config.getKeys(false)) {
+        for (PathString s : config.getKeys(false)) {
             Optional.ofNullable(config.getInstance(s, List.class))
                     .ifPresent(list -> list.forEach(o -> {
                         if (o instanceof Map) {
-                            itemToMenuMap.put(InteractiveItemStack.deserialize((Map<String, Object>) o), s + ".yml");
+                            itemToMenuMap.put(InteractiveItemStack.deserialize((Map<String, Object>) o), PathString.toPath(s) + ".yml");
                         }
                     }));
         }
@@ -39,7 +40,7 @@ public class ItemStorage {
         // Clear old config
         main.getConfig().getKeys(false).forEach(main.getConfig()::remove);
 
-        map.forEach((s, list) -> main.getConfig().set(s, list));
+        map.forEach((s, list) -> main.getConfig().set(new PathString(s), list));
         main.getConfig().save();
     }
 
@@ -58,5 +59,9 @@ public class ItemStorage {
                     || (rightClick
                     && checkItem.isRightClick()));
         }).findFirst();
+    }
+
+    public Map<InteractiveItemStack, String> getItemToMenuMap() {
+        return itemToMenuMap;
     }
 }
