@@ -46,7 +46,7 @@ public class ConvertItemCommand extends Command {
             ItemStack itemStack = entry.getKey().getItemStack();
 
             CommandItem commandItem = new CommandItem(itemStack);
-            commandItem.setByConsole(Collections.singletonList("openmenu " + entry.getValue() + " " + String.join(" ", entry.getKey().getArgs())));
+            commandItem.setByConsole(Collections.singletonList("openmenu " + entry.getValue() + " %player% " + String.join(" ", entry.getKey().getArgs())));
 
             manager.saveItem(commandItem, "bettergui-" + count++);
         }
